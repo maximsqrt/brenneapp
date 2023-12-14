@@ -8,22 +8,15 @@ import 'package:brenneapp/days_list.dart';
 
 class TimesScreen extends StatelessWidget {
   final List<String> names;
-
+final DaysList daysList = DaysList();
   TimesScreen({Key? key, required this.names}) : super(key: key);
 
-  List<List<String>> allDaysLists = [];
-
-  
-
-  void _navigateToWorkersheetScreen(BuildContext context) {
-    // Flatten the list of lists into a single list
-    List<String> flattenedDaysList =
-        allDaysLists.expand((days) => days).toList();
-
+  void _navigateToWorkersheetScreen(BuildContext context, DaysList daysList) {
+    List<String> selectedDays = daysList.getSelectedDays();
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => Worksheet(tappedDays: flattenedDaysList),
+        builder: (context) => Worksheet(tappedDays: selectedDays),
       ),
     );
   }
@@ -81,12 +74,11 @@ class TimesScreen extends StatelessWidget {
           ),
           const SizedBox(height: 16),
           Container(
-            margin: const EdgeInsets.only(
-                top: 12.0), // Adjust the top margin as needed
-            width: double.infinity, // Make the button take the full width
+            margin: const EdgeInsets.only(top: 12.0),
+            width: double.infinity,
             child: ElevatedButton(
               onPressed: () {
-                _navigateToWorkersheetScreen(context);
+                _navigateToWorkersheetScreen(context, daysList);
               },
               child: const Text('Go to Worksheet'),
             ),
