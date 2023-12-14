@@ -7,27 +7,31 @@ import 'package:brenneapp/worker_card.dart';
 import 'package:flutter/material.dart';
 
 class DaysList extends ChangeNotifier {
-  List<String> _selectedDays = [];
+  // Ein Map, um ausgewählte Tage für verschiedene WorkerCards zu verwalten
+  Map<String, List<String>> _selectedDaysMap = {};
 
-  List<String> getSelectedDays() => _selectedDays;
-
-  void toggleDay(String day) {
-    if (_selectedDays.contains(day)) {
-      _selectedDays.remove(day);
+  // Methode zum Abrufen der aktuellen ausgewählten Tage für eine bestimmte WorkerCard
+  List<String> getSelectedDays(String workerCardName) {
+    if (_selectedDaysMap.containsKey(workerCardName)) {
+      return _selectedDaysMap[workerCardName]!;
     } else {
-      _selectedDays.add(day);
+      return [];
     }
-
-    notifyListeners();
   }
 
-  void updateDaysFromWorkerCards(List<WorkerCard> workerCards) {
-    // Iteriere über alle WorkerCard-Objekte und füge die ausgewählten Tage zur Liste hinzu
-    for (var workerCard in workerCards) {
-      Set<String> workerCardDays = workerCard.getCheckedDays();
-      _selectedDays.addAll(workerCardDays);
+  // Methode zum Hinzufügen/Entfernen von Tagen für eine bestimmte WorkerCard
+  void toggleDay(String workerCardName, String day) {
+    if (!_selectedDaysMap.containsKey(workerCardName)) {
+      _selectedDaysMap[workerCardName] = [];
     }
 
+    if (_selectedDaysMap[workerCardName]!.contains(day)) {
+      _selectedDaysMap[workerCardName]!.remove(day);
+    } else {
+      _selectedDaysMap[workerCardName]!.add(day);
+    }
+
+    // Benachrichtige alle Zuhörer, dass sich der Zustand geändert hat
     notifyListeners();
   }
 }

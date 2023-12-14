@@ -8,15 +8,44 @@ import 'package:brenneapp/days_list.dart';
 
 class TimesScreen extends StatelessWidget {
   final List<String> names;
-final DaysList daysList = DaysList();
+  final DaysList daysList = DaysList();
+  List<String> selectedDays = []; // Declare selectedDays here
+
   TimesScreen({Key? key, required this.names}) : super(key: key);
 
-  void _navigateToWorkersheetScreen(BuildContext context, DaysList daysList) {
-    List<String> selectedDays = daysList.getSelectedDays();
+  void _navigateToWorkersheetScreen(BuildContext context) {
+    // Remove the declaration of selectedDays from here
     Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => Worksheet(tappedDays: selectedDays),
+      ),
+    );
+  }
+
+  // The function to build the selected days widget
+  Widget _buildSelectedDays() {
+    return Container(
+      padding: EdgeInsets.all(16.0),
+      color: Colors.grey[300],
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Selected Days:',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 18.0,
+            ),
+          ),
+          SizedBox(height: 8.0),
+          Text(
+            selectedDays.isEmpty
+                ? 'No days selected'
+                : selectedDays.join(', '), // Display the selected days
+            style: TextStyle(fontSize: 16.0),
+          ),
+        ],
       ),
     );
   }
@@ -26,8 +55,7 @@ final DaysList daysList = DaysList();
     return Scaffold(
       appBar: AppBar(
         title: const Text('Times Screen'),
-        backgroundColor:
-            Colors.purple, // Set the background color of the AppBar
+        backgroundColor: Colors.purple,
         actions: [
           IconButton(
             icon: const Icon(Icons.settings),
@@ -66,6 +94,7 @@ final DaysList daysList = DaysList();
                 return WorkerCard(
                   name: names[index],
                   onDaysChanged: (days) {
+                    selectedDays = days;
                     // Handle days changed if needed (or provide a dummy implementation)
                   },
                 );
@@ -78,11 +107,12 @@ final DaysList daysList = DaysList();
             width: double.infinity,
             child: ElevatedButton(
               onPressed: () {
-                _navigateToWorkersheetScreen(context, daysList);
+                _navigateToWorkersheetScreen(context);
               },
               child: const Text('Go to Worksheet'),
             ),
           ),
+          _buildSelectedDays(),
         ],
       ),
     );
