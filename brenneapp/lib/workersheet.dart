@@ -10,10 +10,13 @@ import 'package:brenneapp/names.dart';
 
 
 
+
 class Worksheet extends StatelessWidget {
   final List<String> tappedDays; // Declare the tappedDays list as a parameter
 
-  Worksheet({required this.tappedDays}); // Constructor to receive the tappedDays list
+  const Worksheet({super.key, required this.tappedDays}); // Constructor to receive the tappedDays list
+// Inside Worksheet
+
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +28,7 @@ class Worksheet extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text('This is the Worksheet Screen!'),
+            const Text('This is the Workersheet Screen!'),
             const SizedBox(height: 16),
             const Text('Tapped Days:'),
             Text(tappedDays.join(', ')),

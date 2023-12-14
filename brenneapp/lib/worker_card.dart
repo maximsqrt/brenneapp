@@ -1,20 +1,24 @@
 import 'package:flutter/material.dart';
 
 class WorkerCard extends StatefulWidget {
-  WorkerCard({
-    required this.name, 
-    required Null Function(dynamic days) onDaysChanged, 
-    this.child});
+  const WorkerCard({
+    Key? key,
+    required this.name,
+    required this.onDaysChanged,
+    this.child,
+  }) : super(key: key);
 
   final String name;
   final Widget? child;
+  final Null Function(List<String> days) onDaysChanged;
 
   @override
+  // ignore: library_private_types_in_public_api
   _WorkerCardState createState() => _WorkerCardState();
 }
 
 class _WorkerCardState extends State<WorkerCard> {
-  Set<String> checkedDays = Set<String>();
+  Set<String> checkedDays = <String>{};
 
   @override
   Widget build(BuildContext context) {
@@ -60,32 +64,33 @@ class _WorkerCardState extends State<WorkerCard> {
     );
   }
 
-  List<String> tappedDays = [];
-  Widget _buildDayContainer(String text, bool isChecked) {
-    return GestureDetector(
-      onTap: () {
-        setState(() {
-          if (isChecked) {
-            checkedDays.remove(text);
-          } else {
-            checkedDays.add(text);
-          }
-          tappedDays = checkedDays.toList();
-        });
-      },
-      child: Container(
-        width: 20,
-        height: 20,
-        color: isChecked ? Colors.green : null,
-        child: Center(
-          child: Text(
-            text,
-            style: const TextStyle(color: Colors.white),
-          ),
+ Widget _buildDayContainer(String text, bool isChecked) {
+  return GestureDetector(
+    onTap: () {
+      setState(() {
+        if (isChecked) {
+          checkedDays.remove(text);
+        } else {
+          checkedDays.add(text);
+        }
+        widget.onDaysChanged(checkedDays.toList()); // Pass the list of selected days
+      });
+    },
+    child: Container(
+      width: 20,
+      height: 20,
+      color: isChecked ? Colors.green : null,
+      child: Center(
+        child: Text(
+          text,
+          style: const TextStyle(color: Colors.white),
         ),
       ),
-    );
-  }
+    ),
+  );
+}
+
+
 
   bool isChecked(String day) {
     return checkedDays.contains(day);

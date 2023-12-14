@@ -3,6 +3,7 @@ import 'times.dart'; // Import the TimesScreen
 
 class NameList extends StatefulWidget {
   @override
+  // ignore: library_private_types_in_public_api
   _NameListState createState() => _NameListState();
 }
 
@@ -38,25 +39,25 @@ class _NameListState extends State<NameList> {
         children: [
           TextField(
             controller: nameController,
-            decoration: InputDecoration(
+            decoration: const InputDecoration(
               labelText: 'Enter a name',
             ),
           ),
-          SizedBox(height: 16),
+          const SizedBox(height: 16),
           ElevatedButton(
             onPressed: _addNameToList,
-            child: Text('Save Name'),
+            child: const Text('Save Name'),
           ),
-          SizedBox(height: 16),
-          Text('Names:'),
+          const SizedBox(height: 16),
+          const Text('Names:'),
           Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: names.map((name) => Text(name)).toList(),
           ),
-          SizedBox(height: 16),
+          const SizedBox(height: 16),
           ElevatedButton(
             onPressed: _navigateToTimesScreen,
-            child: Text('Go to Times Screen'),
+            child: const Text('Go to Times Screen'),
           ),
         ],
       ),
